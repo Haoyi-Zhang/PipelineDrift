@@ -1,0 +1,136 @@
+{
+  "declarations": [
+    {
+      "future_records": 3,
+      "history_records": 3,
+      "monitor_output_cells": 16,
+      "monitor_transition_cells": 96,
+      "monitor_updates": 2,
+      "name": "class-coverage",
+      "retention_atoms": 4,
+      "retention_transition_cells": 42
+    },
+    {
+      "future_records": 2,
+      "history_records": 4,
+      "monitor_output_cells": 3,
+      "monitor_transition_cells": 18,
+      "monitor_updates": 1,
+      "name": "field-deletion",
+      "retention_atoms": 4,
+      "retention_transition_cells": 44
+    },
+    {
+      "future_records": 4,
+      "history_records": 4,
+      "monitor_output_cells": 3,
+      "monitor_transition_cells": 24,
+      "monitor_updates": 1,
+      "name": "joint-marginals",
+      "retention_atoms": 4,
+      "retention_transition_cells": 48
+    },
+    {
+      "future_records": 4,
+      "history_records": 4,
+      "monitor_output_cells": 8,
+      "monitor_transition_cells": 64,
+      "monitor_updates": 2,
+      "name": "label-disagreement",
+      "retention_atoms": 5,
+      "retention_transition_cells": 64
+    },
+    {
+      "future_records": 2,
+      "history_records": 2,
+      "monitor_output_cells": 6,
+      "monitor_transition_cells": 24,
+      "monitor_updates": 2,
+      "name": "label-revision",
+      "retention_atoms": 3,
+      "retention_transition_cells": 30
+    },
+    {
+      "future_records": 4,
+      "history_records": 4,
+      "monitor_output_cells": 2,
+      "monitor_transition_cells": 16,
+      "monitor_updates": 1,
+      "name": "marginals-only-infeasible",
+      "retention_atoms": 3,
+      "retention_transition_cells": 36
+    },
+    {
+      "future_records": 2,
+      "history_records": 2,
+      "monitor_output_cells": 5,
+      "monitor_transition_cells": 20,
+      "monitor_updates": 2,
+      "name": "missingness-streak",
+      "retention_atoms": 4,
+      "retention_transition_cells": 30
+    },
+    {
+      "future_records": 2,
+      "history_records": 2,
+      "monitor_output_cells": 18,
+      "monitor_transition_cells": 72,
+      "monitor_updates": 2,
+      "name": "rolling-pattern",
+      "retention_atoms": 4,
+      "retention_transition_cells": 54
+    },
+    {
+      "future_records": 2,
+      "history_records": 2,
+      "monitor_output_cells": 6,
+      "monitor_transition_cells": 24,
+      "monitor_updates": 2,
+      "name": "schema-rename-status",
+      "retention_atoms": 4,
+      "retention_transition_cells": 34
+    },
+    {
+      "future_records": 4,
+      "history_records": 4,
+      "monitor_output_cells": 7,
+      "monitor_transition_cells": 56,
+      "monitor_updates": 3,
+      "name": "slice-regression",
+      "retention_atoms": 4,
+      "retention_transition_cells": 92
+    },
+    {
+      "future_records": 2,
+      "history_records": 2,
+      "monitor_output_cells": 9,
+      "monitor_transition_cells": 36,
+      "monitor_updates": 3,
+      "name": "threshold-family",
+      "retention_atoms": 4,
+      "retention_transition_cells": 24
+    },
+    {
+      "future_records": 3,
+      "history_records": 3,
+      "monitor_output_cells": 8,
+      "monitor_transition_cells": 48,
+      "monitor_updates": 4,
+      "name": "weighted-greedy-trap",
+      "retention_atoms": 5,
+      "retention_transition_cells": 30
+    }
+  ],
+  "scope": "the 12 shipped bounded declarations; not an external pipeline implementation",
+  "status": "all extensional compiler cells match the independent reference semantics",
+  "totals": {
+    "declarations": 12,
+    "future_records": 34,
+    "history_records": 36,
+    "monitor_output_cells": 91,
+    "monitor_transition_cells": 498,
+    "monitor_updates": 25,
+    "retention_atoms": 48,
+    "retention_transition_cells": 528
+  }
+}

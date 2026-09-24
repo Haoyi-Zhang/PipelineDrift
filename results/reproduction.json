@@ -1,0 +1,118 @@
+{
+  "status": "commands succeeded and deterministic scientific records matched",
+  "legacy_case_count": 46932,
+  "portfolio_case_count": 20480,
+  "portfolio_masks_checked": 98304,
+  "declarations": 12,
+  "mutations": 571,
+  "unit_tests": 46,
+  "language_cells_checked": 1117,
+  "scientific_record_comparisons": [
+    "language-check.json",
+    "exhaustive/cases-00000-06000.csv",
+    "exhaustive/cases-06000-12000.csv",
+    "exhaustive/cases-12000-18000.csv",
+    "exhaustive/cases-18000-24000.csv",
+    "exhaustive/cases-24000-30000.csv",
+    "exhaustive/cases-30000-36000.csv",
+    "exhaustive/cases-36000-42000.csv",
+    "exhaustive/cases-42000-46932.csv",
+    "pilot/pilot.csv",
+    "pilot/scenarios.json",
+    "counter-family/counter-family.csv",
+    "counter-family/counter-certificates.json",
+    "portfolio/unary-catalogue.csv",
+    "portfolio/binary-catalogue.csv",
+    "portfolio/mutation-results.csv",
+    "portfolio/example-results.json",
+    "portfolio/example-certificates.json"
+  ],
+  "commands": [
+    {
+      "step": "tests",
+      "returncode": 0,
+      "child_cpu_seconds": 0.9093769999999999,
+      "wall_seconds": 0.9126115540000228
+    },
+    {
+      "step": "language-check",
+      "returncode": 0,
+      "child_cpu_seconds": 0.5383550000000001,
+      "wall_seconds": 0.539402280999866
+    },
+    {
+      "step": "pilot",
+      "returncode": 0,
+      "child_cpu_seconds": 0.5566229999999999,
+      "wall_seconds": 0.5585106140001699
+    },
+    {
+      "step": "cases-00000-06000",
+      "returncode": 0,
+      "child_cpu_seconds": 0.8299619999999999,
+      "wall_seconds": 0.8320646820000093
+    },
+    {
+      "step": "cases-06000-12000",
+      "returncode": 0,
+      "child_cpu_seconds": 0.9196420000000001,
+      "wall_seconds": 0.925072825999905
+    },
+    {
+      "step": "cases-12000-18000",
+      "returncode": 0,
+      "child_cpu_seconds": 0.9392930000000003,
+      "wall_seconds": 0.9403491269999904
+    },
+    {
+      "step": "cases-18000-24000",
+      "returncode": 0,
+      "child_cpu_seconds": 0.9845159999999992,
+      "wall_seconds": 0.9856031760000405
+    },
+    {
+      "step": "cases-24000-30000",
+      "returncode": 0,
+      "child_cpu_seconds": 0.907453,
+      "wall_seconds": 0.9096619429999464
+    },
+    {
+      "step": "cases-30000-36000",
+      "returncode": 0,
+      "child_cpu_seconds": 0.8778479999999999,
+      "wall_seconds": 0.8790680659999452
+    },
+    {
+      "step": "cases-36000-42000",
+      "returncode": 0,
+      "child_cpu_seconds": 0.8922920000000001,
+      "wall_seconds": 0.8947680829999172
+    },
+    {
+      "step": "cases-42000-46932",
+      "returncode": 0,
+      "child_cpu_seconds": 0.8599500000000001,
+      "wall_seconds": 0.8610002210000403
+    },
+    {
+      "step": "counter-family",
+      "returncode": 0,
+      "child_cpu_seconds": 0.6305219999999986,
+      "wall_seconds": 0.631627546000118
+    },
+    {
+      "step": "portfolio-campaign",
+      "returncode": 0,
+      "child_cpu_seconds": 4.853520000000001,
+      "wall_seconds": 4.854744368999945
+    }
+  ],
+  "workers": 1,
+  "elapsed_seconds": 15.055686564000098,
+  "parent_cpu_seconds": 0.34146170499999995,
+  "children_cpu_seconds": 14.699353,
+  "parent_peak_rss_kib": 100908,
+  "children_peak_rss_kib": 98140,
+  "timings_are_not_expected_to_match": true,
+  "meaning": "reproduction of bounded finite checks, not independent proof, production validation, or external review"
+}

@@ -1,0 +1,51 @@
+test_calibration_counts_are_enforced (test_bibliography.BibliographyTests.test_calibration_counts_are_enforced) ... ok
+test_consistent_fixture_passes (test_bibliography.BibliographyTests.test_consistent_fixture_passes) ... ok
+test_duplicate_doi_is_rejected (test_bibliography.BibliographyTests.test_duplicate_doi_is_rejected) ... ok
+test_missing_citation_is_rejected_as_padding (test_bibliography.BibliographyTests.test_missing_citation_is_rejected_as_padding) ... ok
+test_parser_handles_nested_braces_and_multiple_entries (test_bibliography.BibliographyTests.test_parser_handles_nested_braces_and_multiple_entries) ... ok
+test_both_audit_answers_exit_successfully (test_cli.CLITests.test_both_audit_answers_exit_successfully) ... ok
+test_nonobject_case_is_controlled_error (test_cli.CLITests.test_nonobject_case_is_controlled_error) ... ok
+test_nonobject_certificate_is_rejected (test_cli.CLITests.test_nonobject_certificate_is_rejected) ... ok
+test_all_named_scenarios (test_core.CoreTests.test_all_named_scenarios) ... ok
+test_bad_relations (test_core.CoreTests.test_bad_relations) ... ok
+test_different_alphabets_and_nonzero_initial_states (test_core.CoreTests.test_different_alphabets_and_nonzero_initial_states) ... ok
+test_empty_history_may_be_a_witness (test_core.CoreTests.test_empty_history_may_be_a_witness) ... ok
+test_enumeration_cardinality (test_core.CoreTests.test_enumeration_cardinality) ... ok
+test_false_negative_certificate_mutations (test_core.CoreTests.test_false_negative_certificate_mutations) ... ok
+test_false_positive_certificate_mutations (test_core.CoreTests.test_false_positive_certificate_mutations) ... ok
+test_fixed_pilot_against_oracle (test_core.CoreTests.test_fixed_pilot_against_oracle) ... ok
+test_future_only_negative_control (test_core.CoreTests.test_future_only_negative_control) ... ok
+test_joint_label_marginals (test_core.CoreTests.test_joint_label_marginals) ... ok
+test_malformed_specifications (test_core.CoreTests.test_malformed_specifications) ... ok
+test_missing_contract_fields (test_core.CoreTests.test_missing_contract_fields) ... ok
+test_oracle_resource_guard (test_core.CoreTests.test_oracle_resource_guard) ... ok
+test_reset_negative_control (test_core.CoreTests.test_reset_negative_control) ... ok
+test_state_equality_false_rejection (test_core.CoreTests.test_state_equality_false_rejection) ... ok
+test_unreachable_states (test_core.CoreTests.test_unreachable_states) ... ok
+test_word_symbol_validation (test_core.CoreTests.test_word_symbol_validation) ... ok
+test_all_declarations_compile_and_analysis_matches_checker (test_portfolio.PortfolioTests.test_all_declarations_compile_and_analysis_matches_checker) ... ok
+test_all_declarations_match_independent_language_semantics (test_portfolio.PortfolioTests.test_all_declarations_match_independent_language_semantics) ... ok
+test_analyze_selected_emits_only_unsafe_certificate (test_portfolio.PortfolioTests.test_analyze_selected_emits_only_unsafe_certificate) ... ok
+test_binary_catalogue_count_and_prefix (test_portfolio.PortfolioTests.test_binary_catalogue_count_and_prefix) ... ok
+test_certificate_schema_rejects_extra_fields (test_portfolio.PortfolioTests.test_certificate_schema_rejects_extra_fields) ... ok
+test_class_coverage_tie_prefers_one_atom (test_portfolio.PortfolioTests.test_class_coverage_tie_prefers_one_atom) ... ok
+test_compiled_trace_matches_hand_calculation (test_portfolio.PortfolioTests.test_compiled_trace_matches_hand_calculation) ... ok
+test_declaration_rejects_unbounded_or_unknown_constructs (test_portfolio.PortfolioTests.test_declaration_rejects_unbounded_or_unknown_constructs) ... ok
+test_infeasible_catalogue_has_replayable_zero_separator (test_portfolio.PortfolioTests.test_infeasible_catalogue_has_replayable_zero_separator) ... ok
+test_optimal_certificate_carries_replayable_migration_maps (test_portfolio.PortfolioTests.test_optimal_certificate_carries_replayable_migration_maps) ... ok
+test_optimal_certificate_rejects_basis_tampering (test_portfolio.PortfolioTests.test_optimal_certificate_rejects_basis_tampering) ... ok
+test_optimal_certificate_rejects_boolean_obstruction_aliases (test_portfolio.PortfolioTests.test_optimal_certificate_rejects_boolean_obstruction_aliases) ... ok
+test_optimal_certificate_rejects_cheaper_unsafe_claim (test_portfolio.PortfolioTests.test_optimal_certificate_rejects_cheaper_unsafe_claim) ... ok
+test_optimal_certificate_rejects_migration_map_tampering (test_portfolio.PortfolioTests.test_optimal_certificate_rejects_migration_map_tampering) ... ok
+test_threshold_family_global_sharing (test_portfolio.PortfolioTests.test_threshold_family_global_sharing) ... ok
+test_unary_catalogue_prefix_matches_independent_checker (test_portfolio.PortfolioTests.test_unary_catalogue_prefix_matches_independent_checker) ... ok
+test_unsafe_certificate_binds_selected_mask (test_portfolio.PortfolioTests.test_unsafe_certificate_binds_selected_mask) ... ok
+test_unsafe_certificate_rejects_boolean_state_aliases (test_portfolio.PortfolioTests.test_unsafe_certificate_rejects_boolean_state_aliases) ... ok
+test_unsafe_certificate_rejects_tampering (test_portfolio.PortfolioTests.test_unsafe_certificate_rejects_tampering) ... ok
+test_weighted_greedy_counterexample (test_portfolio.PortfolioTests.test_weighted_greedy_counterexample) ... ok
+test_window_and_histogram_compilation (test_portfolio.PortfolioTests.test_window_and_histogram_compilation) ... ok
+
+----------------------------------------------------------------------
+Ran 46 tests in 0.219s
+
+OK

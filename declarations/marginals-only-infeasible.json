@@ -1,0 +1,73 @@
+{
+  "name": "marginals-only-infeasible",
+  "metadata": {
+    "motivation": "An intentionally incomplete catalog exposes an unseparated joint-history obligation."
+  },
+  "history_schema": {
+    "fields": {
+      "a": [
+        false,
+        true
+      ],
+      "b": [
+        false,
+        true
+      ]
+    }
+  },
+  "future_schema": {
+    "fields": {
+      "a": [
+        false,
+        true
+      ],
+      "b": [
+        false,
+        true
+      ]
+    }
+  },
+  "retention_atoms": [
+    {
+      "name": "a-count-2",
+      "kind": "count",
+      "cap": 2,
+      "predicate": {
+        "field": "a"
+      }
+    },
+    {
+      "name": "b-count-2",
+      "kind": "count",
+      "cap": 2,
+      "predicate": {
+        "field": "b"
+      }
+    },
+    {
+      "name": "length-2",
+      "kind": "count",
+      "cap": 2,
+      "predicate": {
+        "const": true
+      }
+    }
+  ],
+  "monitor_updates": [
+    {
+      "name": "ever-disagreement",
+      "kind": "seen",
+      "predicate": {
+        "op": "ne",
+        "args": [
+          {
+            "field": "a"
+          },
+          {
+            "field": "b"
+          }
+        ]
+      }
+    }
+  ]
+}

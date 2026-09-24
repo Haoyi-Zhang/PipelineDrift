@@ -1,0 +1,116 @@
+{
+  "name": "class-coverage",
+  "metadata": {
+    "motivation": "A joint bitset competes with separate per-class flags across several planned updates."
+  },
+  "history_schema": {
+    "fields": {
+      "class": [
+        "cat",
+        "dog",
+        "bird"
+      ]
+    }
+  },
+  "future_schema": {
+    "fields": {
+      "class": [
+        "cat",
+        "dog",
+        "bird"
+      ]
+    }
+  },
+  "retention_atoms": [
+    {
+      "name": "seen-class-bitset",
+      "kind": "bitset",
+      "value": {
+        "field": "class"
+      },
+      "values": [
+        "cat",
+        "dog",
+        "bird"
+      ]
+    },
+    {
+      "name": "seen-cat",
+      "kind": "seen",
+      "predicate": {
+        "op": "eq",
+        "args": [
+          {
+            "field": "class"
+          },
+          {
+            "const": "cat"
+          }
+        ]
+      }
+    },
+    {
+      "name": "seen-dog",
+      "kind": "seen",
+      "predicate": {
+        "op": "eq",
+        "args": [
+          {
+            "field": "class"
+          },
+          {
+            "const": "dog"
+          }
+        ]
+      }
+    },
+    {
+      "name": "seen-bird",
+      "kind": "seen",
+      "predicate": {
+        "op": "eq",
+        "args": [
+          {
+            "field": "class"
+          },
+          {
+            "const": "bird"
+          }
+        ]
+      }
+    }
+  ],
+  "monitor_updates": [
+    {
+      "name": "cat-and-dog-covered",
+      "kind": "bitset_all",
+      "value": {
+        "field": "class"
+      },
+      "values": [
+        "cat",
+        "dog",
+        "bird"
+      ],
+      "required": [
+        "cat",
+        "dog"
+      ]
+    },
+    {
+      "name": "bird-covered",
+      "kind": "bitset_any",
+      "value": {
+        "field": "class"
+      },
+      "values": [
+        "cat",
+        "dog",
+        "bird"
+      ],
+      "required": [
+        "bird"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "name": "threshold-family",
+  "metadata": {
+    "motivation": "One retained saturated count should serve a family of future alert thresholds."
+  },
+  "history_schema": {
+    "fields": {
+      "error": [
+        false,
+        true
+      ]
+    }
+  },
+  "future_schema": {
+    "fields": {
+      "error": [
+        false,
+        true
+      ]
+    }
+  },
+  "retention_atoms": [
+    {
+      "name": "ever-error",
+      "kind": "seen",
+      "predicate": {
+        "field": "error"
+      }
+    },
+    {
+      "name": "error-count-2",
+      "kind": "count",
+      "cap": 2,
+      "predicate": {
+        "field": "error"
+      }
+    },
+    {
+      "name": "error-count-3",
+      "kind": "count",
+      "cap": 3,
+      "predicate": {
+        "field": "error"
+      }
+    },
+    {
+      "name": "last-error",
+      "kind": "last",
+      "value": {
+        "field": "error"
+      },
+      "values": [
+        false,
+        true
+      ]
+    }
+  ],
+  "monitor_updates": [
+    {
+      "name": "threshold-1",
+      "kind": "count_threshold",
+      "threshold": 1,
+      "predicate": {
+        "field": "error"
+      }
+    },
+    {
+      "name": "threshold-2",
+      "kind": "count_threshold",
+      "threshold": 2,
+      "predicate": {
+        "field": "error"
+      }
+    },
+    {
+      "name": "threshold-3",
+      "kind": "count_threshold",
+      "threshold": 3,
+      "predicate": {
+        "field": "error"
+      }
+    }
+  ]
+}

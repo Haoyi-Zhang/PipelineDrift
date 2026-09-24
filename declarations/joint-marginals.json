@@ -1,0 +1,90 @@
+{
+  "name": "joint-marginals",
+  "metadata": {
+    "motivation": "Joint disagreement is recoverable only when the candidate catalog contains a joint statistic."
+  },
+  "history_schema": {
+    "fields": {
+      "a": [
+        false,
+        true
+      ],
+      "b": [
+        false,
+        true
+      ]
+    }
+  },
+  "future_schema": {
+    "fields": {
+      "a": [
+        false,
+        true
+      ],
+      "b": [
+        false,
+        true
+      ]
+    }
+  },
+  "retention_atoms": [
+    {
+      "name": "a-count-2",
+      "kind": "count",
+      "cap": 2,
+      "predicate": {
+        "field": "a"
+      }
+    },
+    {
+      "name": "b-count-2",
+      "kind": "count",
+      "cap": 2,
+      "predicate": {
+        "field": "b"
+      }
+    },
+    {
+      "name": "length-2",
+      "kind": "count",
+      "cap": 2,
+      "predicate": {
+        "const": true
+      }
+    },
+    {
+      "name": "disagreement-count-2",
+      "kind": "count",
+      "cap": 2,
+      "predicate": {
+        "op": "ne",
+        "args": [
+          {
+            "field": "a"
+          },
+          {
+            "field": "b"
+          }
+        ]
+      }
+    }
+  ],
+  "monitor_updates": [
+    {
+      "name": "two-disagreements",
+      "kind": "count_threshold",
+      "threshold": 2,
+      "predicate": {
+        "op": "ne",
+        "args": [
+          {
+            "field": "a"
+          },
+          {
+            "field": "b"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,173 @@
+{
+  "name": "weighted-greedy-trap",
+  "metadata": {
+    "motivation": "A bounded weighted instance where local cost-per-obligation choices are globally suboptimal."
+  },
+  "history_schema": {
+    "fields": {
+      "token": [
+        "x",
+        "y",
+        "z"
+      ]
+    }
+  },
+  "future_schema": {
+    "fields": {
+      "token": [
+        "x",
+        "y",
+        "z"
+      ]
+    }
+  },
+  "retention_atoms": [
+    {
+      "name": "seen-x-or-y",
+      "kind": "seen",
+      "cost": 4,
+      "predicate": {
+        "op": "in",
+        "args": [
+          {
+            "field": "token"
+          },
+          [
+            "x",
+            "y"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "seen-y",
+      "kind": "seen",
+      "cost": 5,
+      "predicate": {
+        "op": "eq",
+        "args": [
+          {
+            "field": "token"
+          },
+          {
+            "const": "y"
+          }
+        ]
+      }
+    },
+    {
+      "name": "seen-z",
+      "kind": "seen",
+      "cost": 3,
+      "predicate": {
+        "op": "eq",
+        "args": [
+          {
+            "field": "token"
+          },
+          {
+            "const": "z"
+          }
+        ]
+      }
+    },
+    {
+      "name": "seen-y-or-z",
+      "kind": "seen",
+      "cost": 2,
+      "predicate": {
+        "op": "in",
+        "args": [
+          {
+            "field": "token"
+          },
+          [
+            "y",
+            "z"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "seen-x",
+      "kind": "seen",
+      "cost": 2,
+      "predicate": {
+        "op": "eq",
+        "args": [
+          {
+            "field": "token"
+          },
+          {
+            "const": "x"
+          }
+        ]
+      }
+    }
+  ],
+  "monitor_updates": [
+    {
+      "name": "watch-y-or-z",
+      "kind": "seen",
+      "predicate": {
+        "op": "in",
+        "args": [
+          {
+            "field": "token"
+          },
+          [
+            "y",
+            "z"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "watch-x",
+      "kind": "seen",
+      "predicate": {
+        "op": "eq",
+        "args": [
+          {
+            "field": "token"
+          },
+          {
+            "const": "x"
+          }
+        ]
+      }
+    },
+    {
+      "name": "watch-x-or-z",
+      "kind": "seen",
+      "predicate": {
+        "op": "in",
+        "args": [
+          {
+            "field": "token"
+          },
+          [
+            "x",
+            "z"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "watch-x-or-y",
+      "kind": "seen",
+      "predicate": {
+        "op": "in",
+        "args": [
+          {
+            "field": "token"
+          },
+          [
+            "x",
+            "y"
+          ]
+        ]
+      }
+    }
+  ]
+}
