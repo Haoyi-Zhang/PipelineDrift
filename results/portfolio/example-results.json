@@ -157,7 +157,7 @@
     "greedy_cost": 4,
     "greedy_mask": 3,
     "history_records": 2,
-    "name": "label-revision",
+    "name": "label-field-rename",
     "obstruction_basis": [
       2,
       5
@@ -178,14 +178,14 @@
       13,
       13
     ],
-    "source": "declarations/label-revision.json",
+    "source": "declarations/label-field-rename.json",
     "updates": 2
   },
   {
     "candidate_atoms": 3,
     "candidate_cost": 6,
     "certificate_valid": true,
-    "conflict_pairs": 60,
+    "conflict_pairs": 120,
     "feasible": false,
     "future_records": 4,
     "greedy_atoms": [],
@@ -194,10 +194,7 @@
     "history_records": 4,
     "name": "marginals-only-infeasible",
     "obstruction_basis": [
-      0,
-      1,
-      2,
-      4
+      0
     ],
     "optimal_atoms": [],
     "optimal_cost": null,
@@ -206,7 +203,7 @@
     "per_update_union_cost": null,
     "per_update_union_mask": null,
     "reachable_signatures": [
-      16
+      19
     ],
     "source": "declarations/marginals-only-infeasible.json",
     "updates": 1

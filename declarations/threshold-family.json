@@ -25,7 +25,8 @@
       "kind": "seen",
       "predicate": {
         "field": "error"
-      }
+      },
+      "initial": 0
     },
     {
       "name": "error-count-2",
@@ -33,7 +34,8 @@
       "cap": 2,
       "predicate": {
         "field": "error"
-      }
+      },
+      "initial": 0
     },
     {
       "name": "error-count-3",
@@ -41,7 +43,8 @@
       "cap": 3,
       "predicate": {
         "field": "error"
-      }
+      },
+      "initial": 0
     },
     {
       "name": "last-error",
@@ -52,7 +55,8 @@
       "values": [
         false,
         true
-      ]
+      ],
+      "initial": 0
     }
   ],
   "monitor_updates": [
@@ -62,7 +66,8 @@
       "threshold": 1,
       "predicate": {
         "field": "error"
-      }
+      },
+      "initial": 0
     },
     {
       "name": "threshold-2",
@@ -70,7 +75,8 @@
       "threshold": 2,
       "predicate": {
         "field": "error"
-      }
+      },
+      "initial": 0
     },
     {
       "name": "threshold-3",
@@ -78,7 +84,8 @@
       "threshold": 3,
       "predicate": {
         "field": "error"
-      }
+      },
+      "initial": 0
     }
   ]
 }

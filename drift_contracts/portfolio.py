@@ -6,6 +6,8 @@ from functools import lru_cache
 from itertools import combinations
 from typing import Any
 
+from .limits import (require_pair_budget, require_pair_transition_budget,
+                     require_product_budget, require_subset_budget)
 from .portfolio_model import PortfolioProblem
 
 
@@ -61,6 +63,7 @@ def _future_distances(future: tuple[tuple[int, ...], ...],
                       output: tuple[int, ...]) -> tuple[int | None, ...]:
     n = len(future)
     a = len(future[0])
+    require_pair_transition_budget(n, a, "future-equivalence")
     reverse: list[list[int]] = [[] for _ in range(n * n)]
     for p in range(n):
         for q in range(n):
@@ -105,6 +108,10 @@ def _suffix(update, p: int, q: int, distances: tuple[int | None, ...]) -> tuple[
 
 def _reachable(problem: PortfolioProblem, update_index: int):
     update = problem.updates[update_index]
+    require_product_budget(
+        [len(atom.transition) for atom in problem.atoms] + [len(update.history)],
+        f"update {update.name} reachable product",
+    )
     start = tuple(atom.initial for atom in problem.atoms) + (update.initial,)
     parents: dict[tuple[int, ...], tuple[tuple[int, ...], int] | None] = {start: None}
     depth = {start: 0}
@@ -146,6 +153,7 @@ def build_conflict_analysis(problem: PortfolioProblem) -> ConflictAnalysis:
     for u_index, update in enumerate(problem.updates):
         parents, _ = _reachable(problem, u_index)
         states = sorted(parents)
+        require_pair_budget(len(states), f"update {update.name} reachable")
         reachable_counts.append(len(states))
         n = len(update.history)
         distances = _future_distances(update.future, update.output)
@@ -170,28 +178,30 @@ def build_conflict_analysis(problem: PortfolioProblem) -> ConflictAnalysis:
             previous = best_by_mask.get(mask)
             if previous is None or witness.key() < previous.key():
                 best_by_mask[mask] = witness
-        ordered_update = sorted((mask for mask in update_masks if mask),
-                                key=lambda mask: (mask.bit_count(), mask))
-        update_basis: list[int] = []
-        for mask in ordered_update:
-            if not any((smaller & mask) == smaller for smaller in update_basis):
-                update_basis.append(mask)
         if 0 in update_masks:
-            per_update_masks.append((0, *update_basis))
+            # The inclusion-minimal family is exactly {empty}: every nonempty
+            # separator is a strict superset and therefore redundant.
+            per_update_masks.append((0,))
         else:
+            ordered_update = sorted(update_masks,
+                                    key=lambda mask: (mask.bit_count(), mask))
+            update_basis: list[int] = []
+            for mask in ordered_update:
+                if not any((smaller & mask) == smaller for smaller in update_basis):
+                    update_basis.append(mask)
             per_update_masks.append(tuple(update_basis))
 
-    # Keep only inclusion-minimal nonzero masks for optimization.  If zero is
-    # present, no candidate portfolio can separate that conflict.
-    ordered = sorted((mask for mask in best_by_mask if mask),
-                     key=lambda mask: (mask.bit_count(), mask))
-    basis: list[int] = []
-    for mask in ordered:
-        if not any((smaller & mask) == smaller for smaller in basis):
-            basis.append(mask)
+    # If an empty separator exists, the mathematical inclusion-minimal basis is
+    # exactly {empty}.  Nonzero separators remain in all_witnesses for shortest
+    # selected-portfolio diagnostics, but are not mislabeled as basis members.
     if 0 in best_by_mask:
-        obligations = (0, *basis)
+        obligations = (0,)
     else:
+        ordered = sorted(best_by_mask, key=lambda mask: (mask.bit_count(), mask))
+        basis: list[int] = []
+        for mask in ordered:
+            if not any((smaller & mask) == smaller for smaller in basis):
+                basis.append(mask)
         obligations = tuple(basis)
     return ConflictAnalysis(tuple(obligations),
                             {mask: best_by_mask[mask] for mask in obligations},
@@ -255,6 +265,7 @@ def _packing_lower_bound(problem: PortfolioProblem, remaining: list[int]) -> int
 def optimize_portfolio(problem: PortfolioProblem, analysis: ConflictAnalysis,
                        obligations: tuple[int, ...] | None = None) -> dict[str, Any]:
     """Exact positive-cost branch-and-bound weighted hitting set."""
+    require_subset_budget(len(problem.atoms), "portfolio optimizer")
     if not analysis.feasible:
         return {"feasible": False, "selected_mask": None, "cost": None,
                 "nodes": 0, "pruned": 0}
@@ -318,6 +329,7 @@ def optimize_portfolio(problem: PortfolioProblem, analysis: ConflictAnalysis,
 def oracle_optimize(problem: PortfolioProblem, analysis: ConflictAnalysis,
                     obligations: tuple[int, ...] | None = None) -> tuple[int, int] | None:
     """Independent subset oracle used only for bounded validation."""
+    require_subset_budget(len(problem.atoms), "portfolio oracle")
     if not analysis.feasible:
         return None
     obs = obligations if obligations is not None else analysis.obligations

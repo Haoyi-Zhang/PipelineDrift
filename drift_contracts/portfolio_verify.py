@@ -10,6 +10,9 @@ from collections import deque
 from itertools import combinations
 from typing import Any
 
+from .limits import (AnalysisLimitError, require_pair_budget,
+                     require_pair_transition_budget, require_product_budget,
+                     require_subset_budget)
 from .portfolio_model import PortfolioProblem, run_table
 
 
@@ -79,6 +82,9 @@ def verify_unsafe(problem: PortfolioProblem, certificate: dict[str, Any]) -> boo
 
 
 def _future_equivalent(update) -> set[tuple[int, int]]:
+    require_pair_transition_budget(
+        len(update.history), len(update.future[0]),
+        f"update {update.name} future equivalence")
     relation = {(p, q) for p in range(len(update.history))
                          for q in range(len(update.history))
                          if update.output[p] == update.output[q]}
@@ -99,6 +105,10 @@ def _future_equivalent(update) -> set[tuple[int, int]]:
 def _reachable(problem: PortfolioProblem, update_index: int,
                atom_indices: tuple[int, ...]) -> set[tuple[int, ...]]:
     update = problem.updates[update_index]
+    require_product_budget(
+        [len(problem.atoms[i].transition) for i in atom_indices] + [len(update.history)],
+        f"update {update.name} verifier product",
+    )
     start = tuple(problem.atoms[i].initial for i in atom_indices) + (update.initial,)
     queue = deque([start])
     reachable = {start}
@@ -121,6 +131,7 @@ def _obstruction_basis(problem: PortfolioProblem) -> list[int]:
     all_indices = tuple(range(len(problem.atoms)))
     for update_index, update in enumerate(problem.updates):
         reachable = sorted(_reachable(problem, update_index, all_indices))
+        require_pair_budget(len(reachable), f"update {update.name} verifier reachable")
         relation = _future_equivalent(update)
         for left, right in combinations(reachable, 2):
             if (left[-1], right[-1]) in relation:
@@ -130,13 +141,14 @@ def _obstruction_basis(problem: PortfolioProblem) -> list[int]:
                 if p != q:
                     mask |= 1 << i
             masks.add(mask)
-    ordered = sorted((mask for mask in masks if mask),
-                     key=lambda mask: (mask.bit_count(), mask))
+    if 0 in masks:
+        return [0]
+    ordered = sorted(masks, key=lambda mask: (mask.bit_count(), mask))
     basis: list[int] = []
     for mask in ordered:
         if not any((smaller & mask) == smaller for smaller in basis):
             basis.append(mask)
-    return ([0] if 0 in masks else []) + basis
+    return basis
 
 
 def verify_safe(problem: PortfolioProblem, selected_mask: int) -> bool:
@@ -154,6 +166,8 @@ def verify_safe(problem: PortfolioProblem, selected_mask: int) -> bool:
                     if (p, q) not in relation:
                         return False
         return True
+    except AnalysisLimitError:
+        raise
     except (ValueError, TypeError, IndexError):
         return False
 
@@ -220,11 +234,14 @@ def verify_optimal(problem: PortfolioProblem, certificate: dict[str, Any]) -> bo
         if not _verify_representatives(problem, mask, certificate["representatives"]):
             return False
         # Exact bounded oracle. This is intentionally independent of branch-and-bound.
+        require_subset_budget(len(problem.atoms), "optimal-certificate verifier")
         chosen_key = (cost, mask.bit_count(), mask)
         for other in range(1 << len(problem.atoms)):
             other_key = (problem.cost(other), other.bit_count(), other)
             if other_key < chosen_key and verify_safe(problem, other):
                 return False
         return True
+    except AnalysisLimitError:
+        raise
     except (ValueError, TypeError, KeyError):
         return False

@@ -1,57 +1,64 @@
 # Resource accounting
 
-## Fixed limits
+## Checked environment and release preflight
 
-The project was constrained to four CPU cores, 4 GiB RAM, no swap, GPU, external
-compute, model API, private dataset, real service/device, or new human study.
-Each scientific run had to remain below 45 minutes; the full campaign ceiling
-was eight CPU-hours with at least one quarter reserved for repair and clean
-reproduction.  The final archives must remain below 128 MiB.
+The final prepackage release check used one worker on Debian GNU/Linux 13 (trixie),
+CPython 3.13.5, with 0 bytes observed swap. Immediately before the
+run it recorded 5,143,695,360 bytes available memory and 31,886,786,560 bytes
+free disk. The wrapper requires Linux, CPython 3.10 or newer, at least 512 MiB
+available memory, and at least 250 MiB free disk. It uses no network or
+third-party Python package. macOS, Windows, PyPy, and other Python versions were
+not checked and are not claimed supported.
 
-All recorded experiments used one worker and the Python standard library.
-Resource guards in the clean runner attempt one-CPU affinity, a 3 GiB virtual
-address-space limit, and a 60-second child CPU limit.  Platform enforcement of
-these guards is checked where supported and is not presented as a sandbox
-security claim.
+The scientific runner sets a 3 GiB address-space limit, a 60-second child CPU
+limit, and one-CPU affinity where the host exposes that interface. These are
+bounded-run safeguards, not sandbox-security guarantees. A budget refusal is a
+failed analysis and is never interpreted as safety, unsafety, feasibility, or
+optimality.
 
-## Portfolio campaign
+## Regenerated portfolio campaign
 
-The complete portfolio campaign (`results/portfolio/summary.json`) recorded:
+`results/portfolio/summary.json` records:
 
-- 20,480 finite problems and 98,304 portfolio masks;
-- 4.071191058 CPU seconds and 4.077175123 wall seconds in the final recorded campaign;
-- maximum recorded process peak RSS 96,300 KiB;
-- no timeout, safety disagreement, optimizer disagreement, invalid certificate,
-  or minimum-witness mismatch.
+- 20,480 finite catalogue problems and 98,304 portfolio masks;
+- 7.240079079 CPU seconds and 7.241376879 wall seconds;
+- 96,040 KiB maximum recorded process peak RSS;
+- zero safety, optimizer, certificate, minimum-witness, or mutant
+  catalogue-infeasibility-evidence disagreement.
 
-The language checker covers 1,117 extensional compiler cells.  The declaration
-and mutation portions cover 12 declarations and 571 one-cell mutations.  Their
-counts, rather than timing, support the correctness claims.
+The named campaign also contains 12 declarations, 571 one-cell monitor mutants,
+256 fixed-seed generated problems, 2,348 generated-problem masks, and 79
+one-at-a-time cost perturbations. The language report contains 1,272 transition,
+output, initial-state, and empty-history checks. These counts support the finite
+correctness claims; timings do not.
 
-## Preserved legacy campaign
+## Preserved single-summary regression
 
-The eight single-summary chunks cover 46,932 cases.  Their inner timed regions
-sum to 2.577352622 CPU seconds and 2.596182846 wall seconds, with maximum process
-peak RSS 93,992 KiB.  The 48-point counter grid recorded 0.000910101 CPU seconds.
-These values exclude interpreter startup, editing, web acquisition, TeX build,
-and packaging; they are not retroactively treated as whole-project CPU use.
+The eight legacy chunks cover 46,932 cases. Their recorded inner regions sum to
+2.577352622 CPU seconds and 2.596182846 wall seconds, with 93,992 KiB maximum
+process peak RSS. The 48-case saturated-counter grid recorded 0.000910101 CPU
+seconds. These measurements exclude editing, source acquisition, TeX build, and
+packaging and are not represented as whole-project resource use.
 
-## Working clean reproduction
+## Complete prepackage release check
 
-`results/reproduction.json` records the full sequential runner used before final
-packaging:
+`results/release-check.json` and `results/reproduction.json` record:
 
-- 46 unit and CLI tests;
-- 1,117 language cells;
-- 46,932 legacy cases;
+- 66 unit and command-line tests;
+- 1,272 language checks;
+- 46,932 legacy cases and 48 counter-family cases;
 - 20,480 portfolio problems and 98,304 masks;
 - 12 declarations and 571 mutations;
-- 18 deterministic scientific-record comparisons;
-- 15.055686564 seconds elapsed;
-- 0.341461705 parent CPU seconds and 14.699353 child CPU seconds;
-- 100,908 KiB parent and 98,140 KiB maximum child peak RSS.
+- 256 fixed-seed generated problems and 2,348 masks;
+- 79 cost perturbations and one five-field TFX schema projection;
+- 28 deterministic scientific-record comparisons;
+- 32.264298760 seconds wrapper elapsed time;
+- 31.464728750 seconds scientific-runner elapsed time;
+- 31.022448 child CPU seconds;
+- 101,152 KiB parent and 109,356 KiB maximum child peak RSS.
 
-Fresh package-extraction runs may report different timing/RSS values.  The
-scientific records, not timing equality, are the reproducibility criterion.
-This accounting establishes ample closure under the stated budget; it does not
-support a scalability or throughput claim.
+Fresh extraction runs are expected to report different timing, free-space,
+available-memory, and RSS observations. Equality is required only for the
+scientific records explicitly listed by `tools/reproduce.py`. These measurements
+show closure for the shipped bounded campaign; they do not establish large-scale
+throughput or industrial scalability.

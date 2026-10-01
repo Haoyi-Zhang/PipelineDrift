@@ -28,6 +28,7 @@ from drift_contracts.portfolio_cases import binary_catalogue, unary_catalogue
 from drift_contracts.portfolio_dsl import load_declaration
 from drift_contracts.portfolio_model import MonitorUpdate, PortfolioProblem, run_table
 from drift_contracts.portfolio_verify import verify_optimal, verify_safe, verify_unsafe
+from drift_contracts.limits import require_subset_budget
 
 
 def _write_json(path: Path, value: Any, replace_existing: bool) -> None:
@@ -78,7 +79,8 @@ def _unary_minimum(problem: PortfolioProblem, mask: int) -> int | None:
 
 def _independent_best(problem: PortfolioProblem) -> tuple[int, int] | None:
     best: tuple[int, int, int] | None = None
-    for mask in range(1 << len(problem.atoms)):
+    subset_count = require_subset_budget(len(problem.atoms), "campaign independent optimum")
+    for mask in range(subset_count):
         if verify_safe(problem, mask):
             candidate = (problem.cost(mask), mask.bit_count(), mask)
             if best is None or candidate < best:
@@ -107,7 +109,8 @@ def _run_catalogue(name: str, cases: Iterable, csv_path: Path,
             analysis = build_conflict_analysis(problem)
             basis_sizes.append(len(analysis.obligations))
             case_safe = case_safety_mismatch = case_certificate_failure = case_witness_mismatch = 0
-            for mask in range(1 << len(problem.atoms)):
+            subset_count = require_subset_budget(len(problem.atoms), f"campaign {case_id}")
+            for mask in range(subset_count):
                 predicted = is_safe(mask, analysis)
                 checked = verify_safe(problem, mask)
                 if predicted != checked:
@@ -141,7 +144,7 @@ def _run_catalogue(name: str, cases: Iterable, csv_path: Path,
                 optimizer_mismatch += 1
             cases_count += 1
             safe_masks += case_safe
-            unsafe_masks += (1 << len(problem.atoms)) - case_safe
+            unsafe_masks += subset_count - case_safe
             safety_mismatch += case_safety_mismatch
             certificate_failure += case_certificate_failure
             witness_mismatch += case_witness_mismatch
@@ -217,43 +220,58 @@ def _example_record(path: Path) -> tuple[dict[str, Any], PortfolioProblem, Any, 
     else:
         witness = shortest_failure(problem.all_mask, analysis)
         certificate = make_unsafe_certificate(problem, problem.all_mask, witness) if witness else {}
-        record["certificate_valid"] = bool(witness and verify_unsafe(problem, certificate))
+        record["certificate_valid"] = bool(
+            witness and witness.separator_mask == 0
+            and not verify_safe(problem, problem.all_mask)
+            and verify_unsafe(problem, certificate)
+        )
     return record, problem, analysis, certificate
+
+
+def _problem_table_signature(problem: PortfolioProblem) -> tuple[Any, ...]:
+    """Full extensional monitor representation used for mutation deduplication."""
+    return tuple((update.initial, update.history, update.future, update.output)
+                 for update in problem.updates)
 
 
 def _mutants(problem: PortfolioProblem):
     seen: set[tuple[Any, ...]] = set()
     for update_index, update in enumerate(problem.updates):
         n = len(update.history)
-        # One deterministic redirection per transition cell.
+        # Exactly one cyclic redirection per transition cell.  For the fixed
+        # two-state campaign subspace this flips the destination; no alternate
+        # destinations are enumerated.
         for part_name in ("history", "future"):
             table = getattr(update, part_name)
             for state, row in enumerate(table):
                 for symbol, old in enumerate(row):
                     if n <= 1:
                         continue
-                    new = (old + 1) % n
+                    new_destination = (old + 1) % n
                     rows = [list(r) for r in table]
-                    rows[state][symbol] = new
-                    kwargs = {part_name: tuple(tuple(r) for r in rows)}
-                    mutant_update = replace(update, **kwargs)
-                    key = (update_index, mutant_update.history, mutant_update.future,
-                           mutant_update.output)
+                    rows[state][symbol] = new_destination
+                    mutant_update = replace(update, **{
+                        part_name: tuple(tuple(r) for r in rows)})
+                    updates = list(problem.updates)
+                    updates[update_index] = mutant_update
+                    mutant = replace(problem, updates=tuple(updates))
+                    key = _problem_table_signature(mutant)
                     if key in seen:
                         continue
                     seen.add(key)
-                    updates = list(problem.updates); updates[update_index] = mutant_update
-                    yield f"u{update_index}-{part_name}-{state}-{symbol}", replace(problem, updates=tuple(updates))
+                    yield f"u{update_index}-{part_name}-{state}-{symbol}", mutant
         for state in range(n):
-            output = list(update.output); output[state] = 1 - output[state]
+            output = list(update.output)
+            output[state] = 1 - output[state]
             mutant_update = replace(update, output=tuple(output))
-            key = (update_index, mutant_update.history, mutant_update.future,
-                   mutant_update.output)
+            updates = list(problem.updates)
+            updates[update_index] = mutant_update
+            mutant = replace(problem, updates=tuple(updates))
+            key = _problem_table_signature(mutant)
             if key in seen:
                 continue
             seen.add(key)
-            updates = list(problem.updates); updates[update_index] = mutant_update
-            yield f"u{update_index}-output-{state}", replace(problem, updates=tuple(updates))
+            yield f"u{update_index}-output-{state}", mutant
 
 
 def _run_examples(output: Path, replace_existing: bool) -> dict[str, Any]:
@@ -272,19 +290,40 @@ def _run_examples(output: Path, replace_existing: bool) -> dict[str, Any]:
             old_safe = verify_safe(mutant, old_mask)
             result = optimize_portfolio(mutant, mutant_analysis)
             cert_valid = True
+            old_failure_valid = True
             if not old_safe:
                 witness = shortest_failure(old_mask, mutant_analysis)
-                cert_valid = bool(witness and verify_unsafe(
+                old_failure_valid = bool(witness and verify_unsafe(
                     mutant, make_unsafe_certificate(mutant, old_mask, witness)))
+                cert_valid = cert_valid and old_failure_valid
+            infeasibility_valid = True
             if result["feasible"]:
                 opt_cert = make_optimal_certificate(
                     mutant, mutant_analysis, int(result["selected_mask"]))
                 cert_valid = cert_valid and verify_optimal(mutant, opt_cert)
+            else:
+                # Failure of the old optimum is not evidence that the whole
+                # catalogue is infeasible.  Independently test all candidates
+                # and replay a zero-separator certificate.
+                all_mask_witness = shortest_failure(mutant.all_mask, mutant_analysis)
+                infeasibility_valid = bool(
+                    not verify_safe(mutant, mutant.all_mask)
+                    and all_mask_witness is not None
+                    and all_mask_witness.separator_mask == 0
+                    and verify_unsafe(
+                        mutant,
+                        make_unsafe_certificate(mutant, mutant.all_mask,
+                                                all_mask_witness),
+                    )
+                )
+                cert_valid = cert_valid and infeasibility_valid
             mutation_rows.append({
                 "base": problem.name, "mutation": mutant_id,
                 "old_mask": old_mask, "old_cost": old_cost,
                 "old_portfolio_safe": old_safe,
+                "old_failure_certificate_valid": old_failure_valid,
                 "mutated_catalogue_feasible": result["feasible"],
+                "catalogue_infeasibility_verified": infeasibility_valid,
                 "mutated_optimal_mask": result["selected_mask"],
                 "mutated_optimal_cost": result["cost"],
                 "cost_delta": None if result["cost"] is None else int(result["cost"]) - old_cost,
@@ -310,6 +349,10 @@ def _run_examples(output: Path, replace_existing: bool) -> dict[str, Any]:
         "old_portfolio_became_unsafe": sum(not row["old_portfolio_safe"] for row in mutation_rows),
         "mutated_catalogue_infeasible": sum(not row["mutated_catalogue_feasible"] for row in mutation_rows),
         "mutation_certificate_failures": sum(not row["certificate_valid"] for row in mutation_rows),
+        "mutation_infeasibility_verification_failures": sum(
+            (not row["mutated_catalogue_feasible"]) and
+            (not row["catalogue_infeasibility_verified"])
+            for row in mutation_rows),
         "mutations_increasing_optimal_cost": sum(row["cost_delta"] is not None and row["cost_delta"] > 0 for row in mutation_rows),
         "mutations_decreasing_optimal_cost": sum(row["cost_delta"] is not None and row["cost_delta"] < 0 for row in mutation_rows),
     }

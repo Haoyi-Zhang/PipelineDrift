@@ -184,11 +184,11 @@ class PortfolioTests(unittest.TestCase):
             "history_schema": {"fields": {"b": [False, True], "x": ["a", "b"]}},
             "future_schema": {"fields": {"b": [False, True], "x": ["a", "b"]}},
             "retention_atoms": [
-                {"name": "window", "kind": "window", "width": 2,
+                {"name": "window", "kind": "window", "initial": 0, "width": 2,
                  "predicate": {"field": "b"}},
-                {"name": "hist", "kind": "histogram", "cap": 1,
+                {"name": "hist", "kind": "histogram", "initial": 0, "cap": 1,
                  "value": {"field": "x"}, "values": ["a", "b"]}],
-            "monitor_updates": [{"name": "pattern", "kind": "window_pattern",
+            "monitor_updates": [{"name": "pattern", "kind": "window_pattern", "initial": 0,
                                   "pattern": [True, False],
                                   "predicate": {"field": "b"}}]}
         problem = compile_declaration(doc)

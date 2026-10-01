@@ -82,6 +82,12 @@ def main() -> int:
         'counter-family')
     run(['tools/portfolio_campaign.py', '--output', str(out/'portfolio')],
         'portfolio-campaign')
+    run(['tools/random_differential.py', '--output', str(out/'random-differential'),
+         '--seed', '20260915', '--problems', '256'], 'random-differential')
+    run(['tools/cost_sensitivity.py', '--output', str(out/'cost-sensitivity')],
+        'cost-sensitivity')
+    run(['tools/tfx_projection.py', '--output', str(out/'tfx-projection')],
+        'tfx-projection')
 
     summary = summarize(out/'exhaustive')
     (out/'summary.json').write_text(json.dumps(summary, indent=2)+'\n', encoding='utf-8')
@@ -120,6 +126,30 @@ def main() -> int:
             raise RuntimeError(f'portfolio evidence differs: {name}')
         comparisons.append(f'portfolio/{name}')
 
+    deterministic_groups = {
+        'random-differential': ('problems.jsonl', 'cases.csv', 'summary.json'),
+        'cost-sensitivity': ('inputs.json', 'variations.csv', 'summary.json'),
+        'tfx-projection': ('projected-declaration.json', 'projection-map.json',
+                           'certificate.json', 'result.json'),
+    }
+    for group, names in deterministic_groups.items():
+        for name in names:
+            expected_path = root/'results'/group/name
+            actual_path = out/group/name
+            if expected_path.read_bytes() != actual_path.read_bytes():
+                raise RuntimeError(f'{group} evidence differs: {name}')
+            comparisons.append(f'{group}/{name}')
+
+    language_report = json.loads((out/'language-check.json').read_text(encoding='utf-8'))
+    random_report = json.loads((out/'random-differential/summary.json').read_text(encoding='utf-8'))
+    cost_report = json.loads((out/'cost-sensitivity/summary.json').read_text(encoding='utf-8'))
+    tfx_report = json.loads((out/'tfx-projection/result.json').read_text(encoding='utf-8'))
+    language_cells = (language_report['totals']['retention_transition_cells'] +
+                      language_report['totals']['monitor_transition_cells'] +
+                      language_report['totals']['monitor_output_cells'] +
+                      language_report['totals']['initial_states_checked'] +
+                      language_report['totals']['empty_histories_checked'])
+
     after = resource.getrusage(resource.RUSAGE_CHILDREN)
     report = {
         'status': 'commands succeeded and deterministic scientific records matched',
@@ -129,7 +159,11 @@ def main() -> int:
         'declarations': actual_portfolio['examples']['declarations'],
         'mutations': actual_portfolio['examples']['mutations'],
         'unit_tests': unit_tests,
-        'language_cells_checked': 1117,
+        'language_cells_checked': language_cells,
+        'random_problems': random_report['problems'],
+        'random_portfolio_masks_checked': random_report['portfolio_masks_checked'],
+        'cost_perturbations': cost_report['perturbations'],
+        'tfx_features_projected': tfx_report['features_projected'],
         'scientific_record_comparisons': comparisons,
         'commands': commands,
         'workers': 1,

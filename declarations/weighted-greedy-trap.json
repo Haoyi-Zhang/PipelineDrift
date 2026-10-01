@@ -37,7 +37,8 @@
             "y"
           ]
         ]
-      }
+      },
+      "initial": 0
     },
     {
       "name": "seen-y",
@@ -53,7 +54,8 @@
             "const": "y"
           }
         ]
-      }
+      },
+      "initial": 0
     },
     {
       "name": "seen-z",
@@ -69,7 +71,8 @@
             "const": "z"
           }
         ]
-      }
+      },
+      "initial": 0
     },
     {
       "name": "seen-y-or-z",
@@ -86,7 +89,8 @@
             "z"
           ]
         ]
-      }
+      },
+      "initial": 0
     },
     {
       "name": "seen-x",
@@ -102,7 +106,8 @@
             "const": "x"
           }
         ]
-      }
+      },
+      "initial": 0
     }
   ],
   "monitor_updates": [
@@ -120,7 +125,8 @@
             "z"
           ]
         ]
-      }
+      },
+      "initial": 0
     },
     {
       "name": "watch-x",
@@ -135,7 +141,8 @@
             "const": "x"
           }
         ]
-      }
+      },
+      "initial": 0
     },
     {
       "name": "watch-x-or-z",
@@ -151,7 +158,8 @@
             "z"
           ]
         ]
-      }
+      },
+      "initial": 0
     },
     {
       "name": "watch-x-or-y",
@@ -167,7 +175,8 @@
             "y"
           ]
         ]
-      }
+      },
+      "initial": 0
     }
   ]
 }

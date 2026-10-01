@@ -1,7 +1,7 @@
 {
-  "name": "label-revision",
+  "name": "label-field-rename",
   "metadata": {
-    "motivation": "A renamed label field must preserve both a capped count and the last observed label."
+    "motivation": "A label-field rename preserves the same positive-count and last-label predicates across the schema boundary; this is not a label-function rule change."
   },
   "history_schema": {
     "fields": {
@@ -34,7 +34,8 @@
             "const": 1
           }
         ]
-      }
+      },
+      "initial": 0
     },
     {
       "name": "last-old-label",
@@ -45,7 +46,8 @@
       "values": [
         0,
         1
-      ]
+      ],
+      "initial": 0
     },
     {
       "name": "label-histogram-2",
@@ -57,7 +59,8 @@
       "values": [
         0,
         1
-      ]
+      ],
+      "initial": 0
     }
   ],
   "monitor_updates": [
@@ -86,7 +89,8 @@
             "const": 1
           }
         ]
-      }
+      },
+      "initial": 0
     },
     {
       "name": "last-positive",
@@ -101,7 +105,8 @@
         0,
         1
       ],
-      "target": 1
+      "target": 1,
+      "initial": 0
     }
   ]
 }

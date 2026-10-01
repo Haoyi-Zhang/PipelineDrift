@@ -31,9 +31,12 @@ define its separator set
 Delta_u(h,h') = { i | a_i(h) != a_i(h') }.
 ```
 
-The finite obstruction family contains every such separator set; the
-*obstruction basis* keeps only inclusion-minimal nonempty sets.  A zero
-separator records a target-relevant distinction that no candidate atom keeps.
+The finite obstruction family contains every such separator set.  If a zero
+separator occurs, the inclusion-minimal obstruction basis is exactly
+`{empty}`: every nonempty separator is a strict superset and cannot restore
+feasibility.  Otherwise the basis keeps the inclusion-minimal nonempty sets.
+A zero separator records a target-relevant distinction that no candidate atom
+keeps.
 
 ## Theorem 1: safety is exact hitting
 
@@ -51,9 +54,11 @@ outputs, so `S` is unsafe.
 Conversely, if `S` is unsafe, two histories have equal selected summaries but
 future-distinguishable target states for some update.  Every selected atom has
 equal states on the histories, so `S` is disjoint from their separator.  Thus a
-missed separator exists.  Removing any separator that strictly contains
+missed separator exists.  When no zero separator exists, removing any separator that strictly contains
 another does not change the portfolios that hit all separators: hitting the
 smaller set also hits its superset.  Repeated removal yields the stated basis.
+When a zero separator exists, the basis is `{empty}` and no portfolio can hit
+it.
 
 ## Corollary 1: candidate-catalog feasibility
 
@@ -146,7 +151,8 @@ formalization of the general theorems.
 ## Theorem 4: compiler trace preservation
 
 For each supported declaration primitive (`seen`, saturated `count`, saturated
-`run`, `last`, finite `bitset`, saturated `histogram`, and bounded `window`), the
+`run`, `last`, finite `bitset`, saturated `histogram`, and bounded Boolean
+predicate-suffix `window`), the
 compiled transition table reaches the same abstract state as direct evaluation
 of that primitive on every finite record trace.  The same holds for monitor
 updates across their historical and future schemas.
@@ -172,10 +178,15 @@ across the migration boundary.
 
 For update `u`, let `M_u` be the number of reachable states in the product of
 all candidate atoms and the update, `q_u` its target state count, `a=|H|`,
-`b=|F|`, and `k` the number of atoms.  Reachability costs `O(a M_u)`; target-pair
-future distances cost `O(b q_u^2)`; explicit endpoint-pair obstruction
-construction costs `O(k M_u^2)`.  The present implementation is intended for
-bounded schemas and candidate catalogs, not unbounded logs or large symbolic
-state spaces.  Obstruction minimization and exact hitting-set search can also be
-exponential in their finite inputs.  These limits are explicit guards, not
-performance claims.
+`b=|F|`, and `k` the number of atoms.  Each historical product edge advances
+all `k` atom states and the target, so reachability costs `O(a M_u (k+1))`
+primitive updates.  Target-pair future distances cost `O(b q_u^2)`; explicit
+endpoint-pair separator construction costs `O(k M_u^2)` before basis
+minimization.  Reconstructing two historical prefixes and one future suffix is
+linear in their emitted length, while deterministic ties can compare words
+lexicographically up to that length.  Exhaustive bounded verification may
+inspect `2^k` subsets, and obstruction minimization and exact hitting-set search
+remain exponential in their finite inputs.  The present implementation is
+intended for bounded schemas and candidate catalogues, not unbounded logs or
+large symbolic state spaces.  These limits are explicit guards, not performance
+claims.

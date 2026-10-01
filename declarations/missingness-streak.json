@@ -25,7 +25,8 @@
       "kind": "seen",
       "predicate": {
         "field": "missing"
-      }
+      },
+      "initial": 0
     },
     {
       "name": "missing-run-2",
@@ -33,7 +34,8 @@
       "cap": 2,
       "predicate": {
         "field": "missing"
-      }
+      },
+      "initial": 0
     },
     {
       "name": "missing-count-2",
@@ -41,7 +43,8 @@
       "cap": 2,
       "predicate": {
         "field": "missing"
-      }
+      },
+      "initial": 0
     },
     {
       "name": "last-two-missing",
@@ -49,7 +52,8 @@
       "width": 2,
       "predicate": {
         "field": "missing"
-      }
+      },
+      "initial": 0
     }
   ],
   "monitor_updates": [
@@ -61,7 +65,8 @@
       },
       "future_predicate": {
         "field": "is_null"
-      }
+      },
+      "initial": 0
     },
     {
       "name": "two-null-streak",
@@ -72,7 +77,8 @@
       },
       "future_predicate": {
         "field": "is_null"
-      }
+      },
+      "initial": 0
     }
   ]
 }

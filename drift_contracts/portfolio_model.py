@@ -7,6 +7,7 @@ standard library.
 """
 from __future__ import annotations
 from dataclasses import dataclass
+from collections.abc import Mapping
 from typing import Any, Iterable
 
 
@@ -34,6 +35,8 @@ def _check_table(table: Any, name: str) -> tuple[tuple[int, ...], ...]:
 
 def run_table(table: tuple[tuple[int, ...], ...], initial: int,
               word: Iterable[int]) -> int:
+    if type(initial) is not int or not 0 <= initial < len(table):
+        raise ValueError("initial state outside range")
     state = initial
     width = len(table[0])
     for symbol in word:
@@ -60,6 +63,8 @@ class RetentionAtom:
         object.__setattr__(self, "transition", table)
         if type(self.initial) is not int or not 0 <= self.initial < len(table):
             raise ValueError("atom initial state outside range")
+        if not isinstance(self.description, str):
+            raise ValueError("atom description must be a string")
 
 
 @dataclass(frozen=True)
@@ -88,6 +93,8 @@ class MonitorUpdate:
         object.__setattr__(self, "output", output)
         if type(self.initial) is not int or not 0 <= self.initial < len(history):
             raise ValueError("update initial state outside range")
+        if not isinstance(self.description, str):
+            raise ValueError("update description must be a string")
 
 
 @dataclass(frozen=True)
@@ -108,6 +115,8 @@ class PortfolioProblem:
         updates = tuple(self.updates)
         if not hs or not fs:
             raise ValueError("history and future alphabets must be nonempty")
+        if any(not isinstance(symbol, str) or not symbol for symbol in hs + fs):
+            raise ValueError("alphabet symbols must be nonempty strings")
         if len(set(hs)) != len(hs) or len(set(fs)) != len(fs):
             raise ValueError("symbol names must be unique within each alphabet")
         if not atoms or not updates:
@@ -124,6 +133,8 @@ class PortfolioProblem:
                 raise ValueError(f"update {update.name} has wrong history alphabet")
             if len(update.future[0]) != len(fs):
                 raise ValueError(f"update {update.name} has wrong future alphabet")
+        if self.metadata is not None and not isinstance(self.metadata, Mapping):
+            raise ValueError("metadata must be a mapping")
         object.__setattr__(self, "history_symbols", hs)
         object.__setattr__(self, "future_symbols", fs)
         object.__setattr__(self, "atoms", atoms)

@@ -21,7 +21,8 @@ def main() -> int:
         'declarations': 0, 'history_records': 0, 'future_records': 0,
         'retention_atoms': 0, 'monitor_updates': 0,
         'retention_transition_cells': 0, 'monitor_transition_cells': 0,
-        'monitor_output_cells': 0,
+        'monitor_output_cells': 0, 'initial_states_checked': 0,
+        'empty_histories_checked': 0,
     }
     for path in sorted((ROOT / 'declarations').glob('*.json')):
         document = json.loads(path.read_text(encoding='utf-8'))
@@ -32,7 +33,7 @@ def main() -> int:
             if key != 'declarations':
                 totals[key] += row[key]
     report = {
-        'status': 'all extensional compiler cells match the independent reference semantics',
+        'status': 'all extensional compiler cells, explicit initials, and empty histories match the independent reference semantics',
         'scope': 'the 12 shipped bounded declarations; not an external pipeline implementation',
         'totals': totals,
         'declarations': rows,

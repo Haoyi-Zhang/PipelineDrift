@@ -32,7 +32,8 @@
         "cat",
         "dog",
         "bird"
-      ]
+      ],
+      "initial": 0
     },
     {
       "name": "seen-cat",
@@ -47,7 +48,8 @@
             "const": "cat"
           }
         ]
-      }
+      },
+      "initial": 0
     },
     {
       "name": "seen-dog",
@@ -62,7 +64,8 @@
             "const": "dog"
           }
         ]
-      }
+      },
+      "initial": 0
     },
     {
       "name": "seen-bird",
@@ -77,7 +80,8 @@
             "const": "bird"
           }
         ]
-      }
+      },
+      "initial": 0
     }
   ],
   "monitor_updates": [
@@ -95,7 +99,8 @@
       "required": [
         "cat",
         "dog"
-      ]
+      ],
+      "initial": 0
     },
     {
       "name": "bird-covered",
@@ -110,7 +115,8 @@
       ],
       "required": [
         "bird"
-      ]
+      ],
+      "initial": 0
     }
   ]
 }

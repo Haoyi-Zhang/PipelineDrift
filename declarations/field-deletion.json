@@ -46,7 +46,8 @@
             ]
           }
         ]
-      }
+      },
+      "initial": 0
     },
     {
       "name": "debug-count-2",
@@ -54,7 +55,8 @@
       "cap": 2,
       "predicate": {
         "field": "debug"
-      }
+      },
+      "initial": 0
     },
     {
       "name": "high-count-2",
@@ -70,14 +72,16 @@
             "const": "high"
           }
         ]
-      }
+      },
+      "initial": 0
     },
     {
       "name": "ever-debug",
       "kind": "seen",
       "predicate": {
         "field": "debug"
-      }
+      },
+      "initial": 0
     }
   ],
   "monitor_updates": [
@@ -114,7 +118,8 @@
             "const": "high"
           }
         ]
-      }
+      },
+      "initial": 0
     }
   ]
 }

@@ -34,7 +34,8 @@
             "const": "bad"
           }
         ]
-      }
+      },
+      "initial": 0
     },
     {
       "name": "last-status",
@@ -45,7 +46,8 @@
       "values": [
         "ok",
         "bad"
-      ]
+      ],
+      "initial": 0
     },
     {
       "name": "status-histogram-2",
@@ -57,7 +59,8 @@
       "values": [
         "ok",
         "bad"
-      ]
+      ],
+      "initial": 0
     },
     {
       "name": "ever-bad",
@@ -72,7 +75,8 @@
             "const": "bad"
           }
         ]
-      }
+      },
+      "initial": 0
     }
   ],
   "monitor_updates": [
@@ -101,7 +105,8 @@
             "const": "bad"
           }
         ]
-      }
+      },
+      "initial": 0
     },
     {
       "name": "last-bad",
@@ -116,7 +121,8 @@
         "ok",
         "bad"
       ],
-      "target": "bad"
+      "target": "bad",
+      "initial": 0
     }
   ]
 }

@@ -371,7 +371,7 @@
     ],
     "selected_mask": 5
   },
-  "label-revision": {
+  "label-field-rename": {
     "cost": 4,
     "kind": "optimal_portfolio",
     "obstruction_basis": [
@@ -496,8 +496,8 @@
     "separator_mask": 0,
     "suffix": [],
     "target_left": 0,
-    "target_right": 1,
-    "update": "ever-disagreement"
+    "target_right": 2,
+    "update": "two-disagreements"
   },
   "missingness-streak": {
     "cost": 3,

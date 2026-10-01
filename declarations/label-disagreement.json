@@ -42,7 +42,8 @@
             "field": "weak_b"
           }
         ]
-      }
+      },
+      "initial": 0
     },
     {
       "name": "ever-disagreement",
@@ -57,7 +58,8 @@
             "field": "weak_b"
           }
         ]
-      }
+      },
+      "initial": 0
     },
     {
       "name": "last-joint-label",
@@ -90,7 +92,8 @@
           true,
           true
         ]
-      ]
+      ],
+      "initial": 0
     },
     {
       "name": "a-positive-count-2",
@@ -98,7 +101,8 @@
       "cap": 2,
       "predicate": {
         "field": "weak_a"
-      }
+      },
+      "initial": 0
     },
     {
       "name": "b-positive-count-2",
@@ -106,7 +110,8 @@
       "cap": 2,
       "predicate": {
         "field": "weak_b"
-      }
+      },
+      "initial": 0
     }
   ],
   "monitor_updates": [
@@ -124,7 +129,8 @@
             "field": "weak_b"
           }
         ]
-      }
+      },
+      "initial": 0
     },
     {
       "name": "last-both-positive",
@@ -161,7 +167,8 @@
       "target": [
         true,
         true
-      ]
+      ],
+      "initial": 0
     }
   ]
 }

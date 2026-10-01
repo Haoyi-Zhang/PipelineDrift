@@ -1,7 +1,7 @@
 {
   "name": "joint-marginals",
   "metadata": {
-    "motivation": "Joint disagreement is recoverable only when the candidate catalog contains a joint statistic."
+    "motivation": "Holding the two-disagreement target fixed, adding one joint disagreement counter repairs an otherwise infeasible marginal-only catalogue."
   },
   "history_schema": {
     "fields": {
@@ -34,7 +34,8 @@
       "cap": 2,
       "predicate": {
         "field": "a"
-      }
+      },
+      "initial": 0
     },
     {
       "name": "b-count-2",
@@ -42,7 +43,8 @@
       "cap": 2,
       "predicate": {
         "field": "b"
-      }
+      },
+      "initial": 0
     },
     {
       "name": "length-2",
@@ -50,7 +52,8 @@
       "cap": 2,
       "predicate": {
         "const": true
-      }
+      },
+      "initial": 0
     },
     {
       "name": "disagreement-count-2",
@@ -66,7 +69,8 @@
             "field": "b"
           }
         ]
-      }
+      },
+      "initial": 0
     }
   ],
   "monitor_updates": [
@@ -84,7 +88,8 @@
             "field": "b"
           }
         ]
-      }
+      },
+      "initial": 0
     }
   ]
 }
