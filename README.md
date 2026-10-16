@@ -1,5 +1,10 @@
 # Declarative Drift Contracts
 
+The optional Matplotlib renderer `python figures/draw_diagrams.py --check`
+generates manuscript relationship diagrams. Use `--output-dir ../paper/figures`
+for sibling-paper copies. It checks the displayed marginal obstruction and
+does not rerun the scientific catalogue.
+
 This artifact synthesizes minimum-cost replay-safe retention portfolios for
 bounded, deterministic, design-time monitor evolution. Inputs declare finite
 historical/future schemas, positive-cost summary atoms, explicit initial states
