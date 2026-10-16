@@ -54,7 +54,10 @@ records with `results/`; timing and peak-memory observations may differ. It
 does not overwrite the retained inputs or results.
 
 `results/` retains raw inputs, CSV outcomes, certificates and summaries;
-`results/current/` retains a later complete reproduction with its command logs.
+`data/native-replay.zip` distributes the later complete reproduction and command
+logs under `results/current/`. From the artifact root, extract the retained
+records with `python -m zipfile -e data/native-replay.zip .` before inspecting
+that directory; extraction does not rerun experiments or replace top-level results.
 Both are provenance-bearing records, not interchangeable timing observations.
 `protocol.md` defines the finite denominators and negative controls;
 `resource-accounting.md` describes the historical measurements.
