@@ -1,18 +1,18 @@
 {
-  "bib_entries": 68,
-  "calibration_cohorts": {
-    "Adjacent venue": 5,
-    "Influential/foundational": 5,
-    "TSE calibration": 12
-  },
-  "checks_are_offline_consistency_checks": true,
-  "citation_occurrences": 105,
-  "duplicate_dois": {},
-  "errors": [],
-  "minimum_cited_required": 55,
-  "missing_entries": [],
   "status": "pass",
+  "bib_entries": 66,
+  "unique_cited_entries": 66,
+  "citation_occurrences": 89,
   "uncited_entries": [],
-  "unique_cited_entries": 68,
-  "verification_ledger_rows": 68
+  "missing_entries": [],
+  "duplicate_dois": {},
+  "verification_ledger_rows": 66,
+  "calibration_cohorts": {
+    "TSE calibration": 12,
+    "Influential/foundational": 5,
+    "Adjacent venue": 5
+  },
+  "minimum_cited_required": 55,
+  "checks_are_offline_consistency_checks": true,
+  "errors": []
 }
